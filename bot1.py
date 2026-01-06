@@ -1,10 +1,6 @@
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    ContextTypes,
-)
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 TOKEN = os.environ.get("BOT_TOKEN")
 
@@ -30,18 +26,16 @@ async def send(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     message_text = " ".join(context.args)
-    
-keyboard = [[InlineKeyboardButton("Connect Support", url="https://t.me/surruadhur")]]
-reply_markup = InlineKeyboardMarkup(keyboard)
 
-for channel_id in CHANNEL_IDS:
-    await context.bot.send_message(
-        chat_id=channel_id,
-        text=message_text,
-        reply_markup=reply_markup
-    )
+    keyboard = [[InlineKeyboardButton("Connect Support", url="https://t.me/surruadhur")]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
 
-   
+    for channel_id in CHANNEL_IDS:
+        await context.bot.send_message(
+            chat_id=channel_id,
+            text=message_text,
+            reply_markup=reply_markup
+        )
 
     await update.message.reply_text("Message sent to both channels.")
 
@@ -50,6 +44,7 @@ def main():
         raise RuntimeError("BOT_TOKEN environment variable not set")
 
     app = ApplicationBuilder().token(TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("send", send))
 
