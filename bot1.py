@@ -30,12 +30,17 @@ async def send(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     message_text = " ".join(context.args)
+keyboard = [[InlineKeyboardButton("Connect Support", url="https://t.me/surruadhur")]]
+reply_markup = InlineKeyboardMarkup(keyboard)
 
-    for channel_id in CHANNEL_IDS:
-        await context.bot.send_message(
-            chat_id=channel_id,
-            text=message_text
-        )
+for channel_id in CHANNEL_IDS:
+    await context.bot.send_message(
+        chat_id=channel_id,
+        text=message_text,
+        reply_markup=reply_markup
+    )
+
+   
 
     await update.message.reply_text("Message sent to both channels.")
 
